@@ -5,20 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cahaya, Pembawa Informasi Alam Semesta</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Poppins:wght@500;600&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Poppins:wght@500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+    
     <!-- Star Background -->
     <div class="stars" id="stars"></div>
     
-    <!-- Floating Particles -->
-    <div class="particles" id="particles"></div>
+    <!-- Nebula Overlay (semi-transparan) -->
+    <div class="nebula-overlay"></div>
     
     <!-- Header -->
     <header>
         <a href="#" class="logo">Tugas PIPK</a>
-        <ul class="nav-menu">
+        
+        <!-- Hamburger Menu for Mobile -->
+        <div class="hamburger" id="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        
+        <ul class="nav-menu" id="navMenu">
             <li><a href="#hero" class="active">Home</a></li>
             <li><a href="#bagian1">Dasar Cahaya</a></li>
             <li><a href="#bagian2">Asal Usul & Spektrum</a></li>
@@ -46,7 +57,7 @@
                         <i class="fas fa-user-graduate"></i>
                     </div>
                     <div class="author-info">
-                        <span>Ikhsan Malik Arasyid</span>
+                        <span>Ikhsan Malik Arrasyid</span>
                         <span>140710240019</span>
                     </div>
                 </div>
@@ -57,220 +68,266 @@
     
     <!-- Bagian 1: Dasar Cahaya -->
     <section id="bagian1">
-        <h2 class="section-title">Bagian 1: Dasar Cahaya</h2>
-        
-        <h3 class="subtitle">Apa Itu Cahaya?</h3>
-        <p>Cahaya adalah salah satu bentuk radiasi elektromagnetik yang mampu dilihat oleh mata manusia pada rentang panjang gelombang sekitar 380–750 nanometer (nm). Meskipun kita hanya menangkap cahaya tampak, spektrum elektromagnetik mencakup panjang gelombang yang jauh lebih luas, mulai dari gelombang radio (≥1 meter) hingga sinar gamma (<0,01 nm).</p>
+        <div class="section-header">
+            <h2 class="section-title">Bagian 1: Dasar Cahaya</h2>
+            <div class="section-subtitle">Memahami Sifat Dasar Cahaya</div>
+        </div>
         
         <div class="content-grid">
-            <!-- Sifat Gelombang -->
+            <!-- Sifat Gelombang Cahaya -->
             <div class="content-card">
-                <h3><i class="fas fa-wave-square"></i> Sifat Gelombang Cahaya</h3>
-                <p>Cahaya dapat dijelaskan sebagai gelombang yang merambat pada kecepatan c (sekitar 3×10<sup>8</sup> m/detik di ruang hampa). Gelombang cahaya memiliki panjang gelombang (λ) dan frekuensi (f) yang saling berkaitan melalui rumus c = λ·f. Warna yang kita lihat pada objek sehari-hari ditentukan oleh panjang gelombangnya dalam rentang cahaya tampak.</p>
+                <div class="card-icon">
+                    <i class="fas fa-wave-square"></i>
+                </div>
+                <h3 class="card-title">Sifat Gelombang Cahaya</h3>
+                <p>Cahaya dapat dijelaskan sebagai gelombang yang merambat pada kecepatan c (3×10<sup>8</sup> m/detik di ruang hampa). Gelombang cahaya memiliki panjang gelombang (λ) dan frekuensi (f) yang saling berkaitan melalui rumus c = λ·f. Panjang gelombang adalah jarak antara dua puncak gelombang yang berurutan. Frekuensi adalah jumlah gelombang yang melewati satu titik dalam satu detik (Hz). Cahaya dengan panjang gelombang antara 380–450 nm tampak ungu hingga biru, sedangkan antara 620–750 nm tampak merah. Kecepatan cahaya di ruang hampa konstan, namun akan berkurang saat melalui medium seperti air atau kaca.</p>
                 
-                <div class="wave-animation">
+                <div class="wave-animation-container">
                     <canvas id="waveCanvas"></canvas>
                     <div class="wave-controls">
                         <div class="wave-slider">
-                            <label for="wavelength">Panjang Gelombang (λ)</label>
-                            <input type="range" id="wavelength" min="380" max="750" value="550" step="10">
-                            <span id="wavelength-value">550 nm</span>
+                            <label for="wavelength">Panjang Gelombang (λ): <span id="wavelength-value">550 nm</span></label>
+                            <input type="range" id="wavelength" min="380" max="750" value="550" step="10" />
                         </div>
                         <div class="wave-slider">
-                            <label for="frequency">Frekuensi (f)</label>
-                            <input type="range" id="frequency" min="400" max="790" value="545" step="10">
-                            <span id="frequency-value">545 THz</span>
+                            <label for="frequency">Frekuensi (f): <span id="frequency-value">545 THz</span></label>
+                            <input type="range" id="frequency" min="400" max="790" value="545" step="10" />
+                        </div>
+                        <div class="wave-slider">
+                            <label for="waveSpeed">Kecepatan Animasi: <span id="waveSpeed-value">Normal</span></label>
+                            <input type="range" id="waveSpeed" min="1" max="5" value="3" />
+                        </div>
+                        <div class="wave-buttons">
+                            <button id="playWaveBtn" class="wave-btn active"><i class="fas fa-play"></i></button>
+                            <button id="pauseWaveBtn" class="wave-btn"><i class="fas fa-pause"></i></button>
                         </div>
                     </div>
                 </div>
                 
-                <ul>
-                    <li><strong>Panjang Gelombang (λ)</strong>: Jarak antara dua puncak gelombang yang berurutan. Cahaya dengan panjang gelombang sekitar 380–450 nm akan tampak ungu hingga biru, sedangkan 620–750 nm akan tampak merah.</li>
-                    <li><strong>Frekuensi (f)</strong>: Jumlah gelombang yang melewati satu titik dalam satu detik, diukur dalam Hertz (Hz). Semakin tinggi frekuensinya, semakin pendek panjang gelombangnya.</li>
-                    <li><strong>Kecepatan (c)</strong>: Di ruang hampa, cahaya bergerak pada kecepatan konstan c ≈ 3×10<sup>8</sup> m/detik. Saat melewati medium seperti air atau kaca, kecepatannya sedikit menurun berdasarkan indeks bias medium tersebut.</li>
+                <ul class="feature-list">
+                    <li><strong>Panjang Gelombang (λ)</strong>: Jarak antara dua puncak gelombang yang berurutan. Cahaya dengan panjang gelombang 380–450 nm tampak ungu-biru, sedangkan 620–750 nm tampak merah.</li>
+                    <li><strong>Frekuensi (f)</strong>: Jumlah gelombang yang melewati satu titik dalam satu detik (Hz). Semakin tinggi frekuensi, semakin pendek panjang gelombang.</li>
+                    <li><strong>Kecepatan (c)</strong>: Di ruang hampa, cahaya bergerak pada kecepatan konstan c ≈ 3×10<sup>8</sup> m/detik. Kecepatannya menurun saat melalui medium seperti air atau kaca.</li>
                 </ul>
             </div>
             
-            <!-- Sifat Partikel -->
+            <!-- Sifat Partikel Cahaya (Foton) -->
             <div class="content-card">
-                <h3><i class="fas fa-atom"></i> Sifat Partikel Cahaya (Foton)</h3>
-                <p>Cahaya terdiri dari partikel-partikel energi disebut foton. Setiap foton membawa energi E yang besarnya E = h·f, dengan h = konstanta Planck (6,626×10⁻³⁴ J·s). Sifat partikel inilah yang menjelaskan fenomena seperti efek fotolistrik, di mana foton menabrak permukaan logam dan melepaskan elektron.</p>
+                <div class="card-icon">
+                    <i class="fas fa-atom"></i>
+                </div>
+                <h3 class="card-title">Sifat Partikel Cahaya (Foton)</h3>
+                <p>Cahaya terdiri dari partikel-partikel energi yang disebut foton. Setiap foton membawa energi E yang besarnya E = h·f, dengan h = konstanta Planck (6,626×10⁻³⁴ J·s). Foton tidak memiliki massa diam, namun membawa momentum. Sinar ultraviolet (UV) memiliki frekuensi lebih tinggi daripada cahaya tampak, sehingga lebih berenergi dan dapat menyebabkan kerusakan kulit. Efek fotolistrik terjadi ketika foton dengan frekuensi cukup tinggi mengenai permukaan logam, sehingga melepaskan elektron. Fenomena ini menjadi dasar teknologi panel surya.</p>
                 
                 <div class="photon-animation">
                     <div class="photon-beam">
-                        <div class="photon" style="--delay: 0s"></div>
-                        <div class="photon" style="--delay: 0.2s"></div>
-                        <div class="photon" style="--delay: 0.4s"></div>
-                        <div class="photon" style="--delay: 0.6s"></div>
-                        <div class="photon" style="--delay: 0.8s"></div>
+                        <div class="photon" style="--delay: 0s"><i class="fas fa-circle"></i></div>
+                        <div class="photon" style="--delay: 0.2s"><i class="fas fa-circle"></i></div>
+                        <div class="photon" style="--delay: 0.4s"><i class="fas fa-circle"></i></div>
+                        <div class="photon" style="--delay: 0.6s"><i class="fas fa-circle"></i></div>
+                        <div class="photon" style="--delay: 0.8s"><i class="fas fa-circle"></i></div>
                     </div>
                     <div class="metal-surface">
-                        <div class="electron"></div>
-                        <div class="electron"></div>
-                        <div class="electron"></div>
+                        <div class="electron"><i class="fas fa-circle"></i></div>
+                        <div class="electron"><i class="fas fa-circle"></i></div>
+                        <div class="electron"><i class="fas fa-circle"></i></div>
                     </div>
                 </div>
+                <div class="animation-label">Simulasi Efek Fotolistrik</div>
                 
-                <ul>
-                    <li><strong>Energi Foton</strong>: Rumus: E = h·f. Semakin tinggi frekuensi (f), semakin tinggi energi tiap foton. Misalnya, sinar ultraviolet (UV) memiliki frekuensi lebih tinggi daripada cahaya tampak, sehingga lebih berenergi dan dapat membakar kulit atau memecahkan ikatan molekul.</li>
-                    <li><strong>Efek Fotolistrik</strong>: Ketika cahaya dengan frekuensi cukup tinggi mengenai permukaan logam, foton dapat melepaskan elektron dari permukaan tersebut. Percobaan ini menunjukkan bahwa tidak peduli seberapa kuat intensitas cahaya (jumlah foton), jika frekuensinya di bawah ambang tertentu, elektron tidak akan terlepas—menegaskan sifat partikel cahaya. Aplikasi nyata: sensor cahaya, sel surya, dan fotodioda.</li>
+                <ul class="feature-list">
+                    <li><strong>Energi Foton</strong>: Rumus: E = h·f. Foton dengan frekuensi lebih tinggi memiliki energi lebih besar.</li>
+                    <li><strong>Efek Fotolistrik</strong>: Ketika foton dengan frekuensi cukup tinggi mengenai permukaan logam, elektron dapat terlepas. Dasar teknologi panel surya.</li>
                 </ul>
             </div>
         </div>
         
         <div class="summary-card">
-            <h3><i class="fas fa-lightbulb"></i> Ringkasan Singkat Bagian 1</h3>
-            <p>Cahaya memiliki sifat ganda: gelombang (λ, f, c) dan partikel (foton, E = h·f).</p>
-            <ul>
-                <li>Sifat gelombang menjelaskan fenomena warna, difraksi, dan interferensi.</li>
-                <li>Sifat partikel menjelaskan efek fotolistrik dan dasar teknologi panel surya.</li>
-            </ul>
+            <h3><i class="fas fa-lightbulb"></i> Ringkasan Singkat</h3>
+            <p>Cahaya memiliki sifat ganda, yaitu gelombang dan partikel. Sebagai gelombang, cahaya menjelaskan fenomena warna, difraksi, dan interferensi. Sebagai partikel (foton), cahaya menjelaskan efek fotolistrik dan dasar teknologi panel surya.</p>
         </div>
         
-        <div class="text-center">
-            <a href="#bagian2" class="btn">Lanjut ke Bagian 2</a>
+        <div class="navigation">
+            <a href="#bagian2" class="btn">Lanjut ke Bagian 2 <i class="fas fa-arrow-down"></i></a>
         </div>
     </section>
     
-    <!-- Bagian 2: Asal Usul & Spektrum Electromagnetik -->
+    <!-- Bagian 2: Asal Usul & Spektrum -->
     <section id="bagian2">
-        <h2 class="section-title">Bagian 2: Asal Usul Cahaya &amp; Spektrum Elektromagnetik</h2>
+        <div class="section-header">
+            <h2 class="section-title">Bagian 2: Asal Usul Cahaya & Spektrum Elektromagnetik</h2>
+            <div class="section-subtitle">Proses Terbentuknya Cahaya di Bintang dan Rentang Spektrumnya</div>
+        </div>
         
-        <h3 class="subtitle">Bagaimana Cahaya Terbentuk di Bintang?</h3>
-        <p>Semua cahaya di alam semesta (kecuali yang dihasilkan manusia) pada dasarnya berasal dari inti reaksi nuklir dalam bintang. Berikut alurnya secara sederhana:</p>
-        
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="timeline-icon">
-                    <i class="fas fa-atom"></i>
-                </div>
-                <div class="timeline-content">
-                    <h4>Fusi Inti</h4>
-                    <p>Di inti bintang seperti Matahari, tekanan dan suhu mencapai jutaan derajat Celsius. Di kondisi ini, inti atom hidrogen (H) bergabung (berfusi) menjadi helium (He). Reaksi umumnya: 4H → He + energi. Energi yang dilepaskan awalnya berupa foton energi tinggi (sinar gamma).</p>
-                </div>
-            </div>
+        <div class="content-card wide-card">
+            <h3 class="card-title"><i class="fas fa-star"></i> Bagaimana Cahaya Terbentuk di Bintang?</h3>
+            <p>Semua cahaya di alam semesta berasal dari reaksi nuklir di inti bintang. Berikut proses lengkapnya:</p>
             
-            <div class="timeline-item">
-                <div class="timeline-icon">
-                    <i class="fas fa-radiation"></i>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-atom"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h4>Fusi Inti</h4>
+                        <p>Di inti bintang, atom hidrogen bergabung (fusi) menjadi helium pada suhu jutaan derajat Celsius. Proses ini melepaskan energi dalam bentuk foton gamma, yaitu radiasi energi sangat tinggi.</p>
+                    </div>
                 </div>
-                <div class="timeline-content">
-                    <h4>Emisi Foton Gamma</h4>
-                    <p>Foton gamma yang dihasilkan memiliki energi sangat tinggi. Setiap foton gamma ini memulai perjalanan panjang, memantul, dan berbenturan dengan partikel lain di zona radiasi bintang.</p>
+                
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-radiation"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h4>Emisi Foton Gamma</h4>
+                        <p>Foton gamma yang dihasilkan memulai perjalanan panjang melalui zona radiasi bintang. Di dalam zona ini, foton sering bertabrakan dengan partikel–partikel plasma.</p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="timeline-item">
-                <div class="timeline-icon">
-                    <i class="fas fa-random"></i>
+                
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-random"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h4>Pengembaraan dalam Plasma</h4>
+                        <p>Foton memantul berulang-ulang saat melewati plasma yang sangat padat. Selama perjalanan ribuan tahun, foton kehilangan sebagian energinya hingga berubah menjadi cahaya tampak.</p>
+                    </div>
                 </div>
-                <div class="timeline-content">
-                    <h4>Pengembaraan dalam Plasma</h4>
-                    <p>Foton gamma memantul berulang kali (ribuan hingga jutaan kali) di dalam lapisan plasma, kehilangan energi sedikit demi sedikit. Akhirnya, setelah ribuan hingga jutaan tahun, sebagian besar energi foton gamma terdispersi menjadi panjang gelombang lebih rendah (inframerah hingga cahaya tampak).</p>
-                </div>
-            </div>
-            
-            <div class="timeline-item">
-                <div class="timeline-icon">
-                    <i class="fas fa-sun"></i>
-                </div>
-                <div class="timeline-content">
-                    <h4>Pancaran di Fotosfer</h4>
-                    <p>Saat foton mencapai lapisan terluar bintang (fotosfer), ia sudah menjadi cahaya tampak. Cahaya tampak ini lah yang kita lihat—misalnya, sinar Matahari di Bumi.</p>
+                
+                <div class="timeline-item">
+                    <div class="timeline-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="timeline-content">
+                        <h4>Pancaran di Fotosfer</h4>
+                        <p>Kini mencapai fotosfer (lapisan terluar bintang), foton tampak keluar sebagai cahaya tampak yang kita lihat dari Bumi. Fotosfer adalah permukaan yang tampak bagi pengamat luar angkasa.</p>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <h3 class="subtitle">Spektrum Elektromagnetik</h3>
-        <p>Spektrum elektromagnetik menggambarkan seluruh rentang panjang gelombang radiasi, dari yang sangat panjang (gelombang radio) hingga yang sangat pendek (sinar gamma). Setiap bagian spektrum memiliki aplikasi dan karakteristik berbeda:</p>
-        
-        <div class="spectrum-container">
-            <div class="spectrum-bar">
-                <div class="spectrum-segment radio" data-name="Radio" data-range="≥1 m"></div>
-                <div class="spectrum-segment microwave" data-name="Microwave" data-range="1 mm – 1 m"></div>
-                <div class="spectrum-segment infrared" data-name="Infrared" data-range="700 nm – 1 mm"></div>
-                <div class="spectrum-segment visible" data-name="Visible" data-range="380 – 750 nm"></div>
-                <div class="spectrum-segment ultraviolet" data-name="Ultraviolet" data-range="10 – 380 nm"></div>
-                <div class="spectrum-segment xray" data-name="X-Ray" data-range="0.01 – 10 nm"></div>
-                <div class="spectrum-segment gamma" data-name="Gamma" data-range="<0.01 nm"></div>
-            </div>
-            <div class="spectrum-info">
-                <div class="spectrum-detail">
-                    <h4 id="spectrum-name">Pilih bagian spektrum</h4>
-                    <p id="spectrum-range"></p>
-                    <p id="spectrum-desc"></p>
+        <div class="content-card wide-card">
+            <h3 class="card-title"><i class="fas fa-rainbow"></i> Spektrum Elektromagnetik</h3>
+            <p>Cahaya tampak hanyalah sebagian kecil dari spektrum elektromagnetik yang sangat luas. Berikut rentang utamanya:</p>
+            
+            <div class="spectrum-container">
+                <div class="spectrum-bar">
+                    <div class="spectrum-segment radio" data-name="Radio" data-range="≥1 m"></div>
+                    <div class="spectrum-segment microwave" data-name="Microwave" data-range="1 mm – 1 m"></div>
+                    <div class="spectrum-segment infrared" data-name="Infrared" data-range="700 nm – 1 mm"></div>
+                    <div class="spectrum-segment visible" data-name="Visible" data-range="380 – 750 nm"></div>
+                    <div class="spectrum-segment ultraviolet" data-name="Ultraviolet" data-range="10 – 380 nm"></div>
+                    <div class="spectrum-segment xray" data-name="X-Ray" data-range="0.01 – 10 nm"></div>
+                    <div class="spectrum-segment gamma" data-name="Gamma" data-range="<0.01 nm"></div>
                 </div>
-                <input type="range" min="0" max="6" value="3" class="spectrum-slider" id="spectrumSlider">
+                <div class="spectrum-info">
+                    <div class="spectrum-detail">
+                        <h4 id="spectrum-name">Pilih bagian spektrum</h4>
+                        <p id="spectrum-range"></p>
+                        <p id="spectrum-desc"></p>
+                    </div>
+                    <input type="range" min="0" max="6" value="3" class="spectrum-slider" id="spectrumSlider" />
+                </div>
+            </div>
+            
+            <div class="applications-grid">
+                <div class="app-card">
+                    <i class="fas fa-satellite"></i>
+                    <h4>Radio &amp; Microwave</h4>
+                    <p>Digunakan untuk siaran radio, komunikasi satelit, radar, dan radio astronomi. Contoh: teleskop radio VLA (Very Large Array) memetakan galaksi jauh.</p>
+                </div>
+                <div class="app-card">
+                    <i class="fas fa-thermometer-full"></i>
+                    <h4>Infrared</h4>
+                    <p>Digunakan dalam termografi, kamera thermal, remote kontrol, dan teleskop infrared. Contoh: Teleskop Spitzer memetakan debu kosmik.</p>
+                </div>
+                <div class="app-card">
+                    <i class="fas fa-eye"></i>
+                    <h4>Cahaya Tampak</h4>
+                    <p>Merupakan rentang yang bisa dilihat mata manusia (380–750 nm). Digunakan pada fotografi, mikroskop, teleskop optik seperti Hubble.</p>
+                </div>
+                <div class="app-card">
+                    <i class="fas fa-bacteria"></i>
+                    <h4>Ultraviolet</h4>
+                    <p>Digunakan untuk sterilisasi, produksi vitamin D, dan observasi astronomi UV. Contoh: Studi atmosfer bintang dan bintang muda.</p>
+                </div>
+                <div class="app-card">
+                    <i class="fas fa-heartbeat"></i>
+                    <h4>X-Ray</h4>
+                    <p>Digunakan dalam radiografi medis (CT scan) dan pengamatan sinar X astronomi. Contoh: Teleskop Chandra memetakan lubang hitam.</p>
+                </div>
+                <div class="app-card">
+                    <i class="fas fa-meteor"></i>
+                    <h4>Gamma</h4>
+                    <p>Gelas energi tertinggi, muncul dari fenomena ekstrem seperti ledakan supernova dan inti galaksi aktif. Contoh: Observatorium Fermi mempelajari sinar gamma kosmik.</p>
+                </div>
             </div>
         </div>
         
-        <div class="text-center">
-            <a href="#bagian3" class="btn">Lanjut ke Bagian 3</a>
+        <div class="navigation">
+            <a href="#bagian3" class="btn">Lanjut ke Bagian 3 <i class="fas fa-arrow-down"></i></a>
         </div>
     </section>
     
-    <!-- Bagian 3: Astronomi & Aplikasi -->
+    <!-- Bagian 3: Astronomi & Aplikasi -->
     <section id="bagian3">
-        <h2 class="section-title">Bagian 3: Cahaya dalam Astronomi & Aplikasi</h2>
-        
-        <h3 class="subtitle">Menjelajah Alam Semesta dengan Teleskop</h3>
-        <p>Teleskop memungkinkan kita melihat objek jauh di angkasa dengan menangkap berbagai panjang gelombang cahaya. Berikut empat teleskop utama dan fungsinya:</p>
-        
-        <div class="telescope-grid">
-            <div class="telescope-card">
-                <img src="assets/images/telescopes/telescope-alma.webp" alt="ALMA Telescope" class="telescope-img">
-                <div class="telescope-info">
-                    <h3>ALMA (Atacama Large Millimeter Array)</h3>
-                    <p><strong>Rentang</strong>: Gelombang radio/millimeter (30 – 950 GHz)</p>
-                    <p><strong>Lokasi</strong>: Gurun Atacama, Chili (di ketinggian &gt; 5000 m)</p>
-                    <p><strong>Fungsi</strong>: Memetakan awan molekuler dingin tempat bintang baru lahir</p>
-                </div>
-            </div>
-            
-            <div class="telescope-card">
-                <img src="assets/images/telescopes/telescope-hubble.webp" alt="Hubble Telescope" class="telescope-img">
-                <div class="telescope-info">
-                    <h3>Hubble Space Telescope</h3>
-                    <p><strong>Rentang</strong>: Optik (380 – 750 nm) & ultraviolet dekat</p>
-                    <p><strong>Lokasi</strong>: Orbit rendah Bumi (&asymp;570 km)</p>
-                    <p><strong>Fungsi</strong>: Menghasilkan citra resolusi tinggi galaksi, nebula, dan objek jauh</p>
-                </div>
-            </div>
-            
-            <div class="telescope-card">
-                <img src="assets/images/telescopes/telescope-chandra.webp" alt="Chandra Telescope" class="telescope-img">
-                <div class="telescope-info">
-                    <h3>Chandra X-Ray Observatory</h3>
-                    <p><strong>Rentang</strong>: Sinar X (0,1 – 10 keV)</p>
-                    <p><strong>Lokasi</strong>: Orbit tinggi di atas Bumi</p>
-                    <p><strong>Fungsi</strong>: Mendeteksi sumber sinar X di angkasa—lubang hitam, supernova, dan galaksi aktif</p>
-                </div>
-            </div>
-            
-            <div class="telescope-card">
-                <img src="assets/images/telescopes/telescope-jwst.webp" alt="James Webb Telescope" class="telescope-img">
-                <div class="telescope-info">
-                    <h3>James Webb Space Telescope (JWST)</h3>
-                    <p><strong>Rentang</strong>: Inframerah dekat hingga menengah (0,6 – 28,5 μm)</p>
-                    <p><strong>Lokasi</strong>: Lagrange Point L2 (&asymp;1,5 juta km dari Bumi)</p>
-                    <p><strong>Fungsi</strong>: Mengamati galaksi awal, pembentukan bintang, atmosfer eksoplanet</p>
-                </div>
-            </div>
+        <div class="section-header">
+            <h2 class="section-title">Bagian 3: Cahaya dalam Astronomi & Aplikasi</h2>
+            <div class="section-subtitle">Teleskop dan Teknik Spektroskopi untuk Menjelajah Alam Semesta</div>
         </div>
         
         <div class="content-card">
-            <h4>Mengapa Berbagai Gelombang Penting?</h4>
-            <p>Atmosfer Bumi menyerap sebagian besar gelombang di luar optik, sehingga observatorium seperti Chandra (sinar X) dan James Webb (inframerah) ditempatkan di luar angkasa untuk mengamati panjang gelombang yang tidak terjangkau di Bumi.</p>
+            <h3 class="card-title"><i class="fas fa-telescope"></i> Menjelajah Alam Semesta dengan Teleskop</h3>
+            <p>Teleskop memungkinkan kita melihat objek jauh di angkasa dengan menangkap cahaya pada berbagai panjang gelombang. Berikut beberapa contoh teleskop unggulan:</p>
+            
+            <div class="telescope-grid">
+                <div class="telescope-card">
+                    <div class="telescope-image" style="background-image: url('assets/images/telescopes/telescope-alma.webp');"></div>
+                    <div class="telescope-info">
+                        <h4>ALMA (Atacama Large Millimeter/submillimeter Array)</h4>
+                        <p><strong>Gelombang:</strong> Radio/millimeter</p>
+                        <p><strong>Lokasi:</strong> Gurun Atacama, Chile</p>
+                        <p><strong>Fungsi:</strong> Memetakan awan molekuler dingin dan wilayah pembentukan bintang dengan resolusi tinggi.</p>
+                    </div>
+                </div>
+                
+                <div class="telescope-card">
+                    <div class="telescope-image" style="background-image: url('assets/images/telescopes/telescope-hubble.webp');"></div>
+                    <div class="telescope-info">
+                        <h4>Teleskop Luar Angkasa Hubble</h4>
+                        <p><strong>Gelombang:</strong> Optik & ultraviolet</p>
+                        <p><strong>Lokasi:</strong> Orbit Bumi</p>
+                        <p><strong>Fungsi:</strong> Menghasilkan citra resolusi tinggi galaksi, nebula, dan fenomena kosmik lainnya tanpa gangguan atmosfer.</p>
+                    </div>
+                </div>
+                
+                <div class="telescope-card">
+                    <div class="telescope-image" style="background-image: url('assets/images/telescopes/telescope-chandra.webp');"></div>
+                    <div class="telescope-info">
+                        <h4>Teleskop Sinar-X Chandra</h4>
+                        <p><strong>Gelombang:</strong> Sinar X</p>
+                        <p><strong>Lokasi:</strong> Orbit Bumi</p>
+                        <p><strong>Fungsi:</strong> Mendeteksi sumber sinar-X dari objek panas seperti lubang hitam, bintang neutron, dan sisa supernova.</p>
+                    </div>
+                </div>
+                
+                <div class="telescope-card">
+                    <div class="telescope-image" style="background-image: url('assets/images/telescopes/telescope-jwst.webp');"></div>
+                    <div class="telescope-info">
+                        <h4>Teleskop Luar Angkasa James Webb</h4>
+                        <p><strong>Gelombang:</strong> Inframerah</p>
+                        <p><strong>Lokasi:</strong> Titik Lagrange L2</p>
+                        <p><strong>Fungsi:</strong> Mempelajari galaksi pertama di alam semesta, pembentukan bintang, dan atmosfer eksoplanet.</p>
+                    </div>
+                </div>
+            </div>
         </div>
         
-        <h3 class="subtitle">Spektroskopi & Redshift: Membaca “Sidik Jari” Cahaya</h3>
-        <p>Spektroskopi memecah cahaya menjadi komponen warnanya (spektrum) untuk mengidentifikasi elemen dan kecepatan pergerakan suatu objek.</p>
-        
-        <div class="content-grid demo-grid">
-            <!-- Cara Kerja Spektroskopi -->
-            <div class="content-card spectroscopy-container">
-                <h4>Cara Kerja Spektroskopi</h4>
-                <p>Cahaya dari objek (bintang, galaksi) diarahkan melalui prisma atau kisi difraksi, memecah menjadi spektrum. Spektrum tampak sebagai garis-garis terang (emisi) atau gelap (absorpsi) yang mewakili elemen tertentu (H, He, Fe, dsb.). Dengan mengukur posisi garis-garis tersebut, kita dapat mengetahui komposisi kimia bintang atau galaksi.</p>
+        <div class="content-grid">
+            <!-- Spektroskopi -->
+            <div class="content-card">
+                <h3 class="card-title"><i class="fas fa-atom"></i> Spektroskopi: Membaca "Sidik Jari" Cahaya</h3>
+                <p>Spektroskopi memisahkan cahaya menjadi komponen panjang gelombang untuk mengidentifikasi unsur kimia dan kecepatan relatif objek langit.</p>
                 
                 <div class="spectroscopy-demo">
                     <div class="spectrum-lines">
@@ -279,156 +336,235 @@
                         <div class="line" data-element="O" style="left: 50%; background: #ffd166;"></div>
                         <div class="line" data-element="Fe" style="left: 70%; background: #6a0572;"></div>
                     </div>
-                    <div class="element-info">
-                        <p>Pilih garis spektrum untuk melihat informasi elemen</p>
+                    <div class="element-info" id="elementInfo">
+                        <p>Klik pada garis spektrum untuk melihat informasi unsur</p>
                     </div>
+                </div>
+                
+                <div class="info-box">
+                    <h4>Cara Kerja:</h4>
+                    <p>Cahaya dari bintang dipecah melalui prisma atau kisi difraksi menjadi spektrum. Garis gelap (absorpsi) muncul saat unsur tertentu menyerap panjang gelombang spesifik. Dari pola garis ini kita dapat mengetahui unsur apa saja yang terdapat di atmosfer bintang, serta kecepatan radialnya jika ada pergeseran ke merah atau biru.</p>
                 </div>
             </div>
             
-            <!-- Fenomena Redshift & Blueshift -->
-            <div class="content-card redshift-container">
-                <h4>Fenomena Redshift &amp; Blueshift</h4>
-                <p>Jika sumber cahaya bergerak menjauh, garis spektrum bergeser ke panjang gelombang lebih panjang (merah) → <strong>redshift</strong>. Jika sumber mendekat, garis bergeser ke panjang gelombang lebih pendek (biru) → <strong>blueshift</strong>. Redshift di galaksi jauh menjadi bukti bahwa alam semesta mengembang. Semakin jauh galaksi, semakin besar redshiftnya.</p>
+            <!-- Redshift & Blueshift -->
+            <div class="content-card">
+                <h3 class="card-title"><i class="fas fa-arrows-alt-h"></i> Redshift & Blueshift</h3>
+                <p>Pergeseran garis spektrum menunjukkan pergerakan relatif objek: jika bergeser ke panjang gelombang lebih panjang (merah), objek menjauh; jika bergeser ke panjang gelombang lebih pendek (biru), objek mendekat.</p>
                 
                 <div class="redshift-demo">
                     <div class="redshift-controls">
-                        <label for="redshiftSlider">Redshift (z):</label>
-                        <input type="range" id="redshiftSlider" min="-0.1" max="0.5" value="0" step="0.01">
-                        <span id="redshift-value">0.00</span>
+                        <label for="redshiftSlider">Redshift (z): <span id="redshift-value">0.00</span></label>
+                        <input type="range" id="redshiftSlider" min="-0.1" max="0.5" value="0" step="0.01" />
                     </div>
                     <div class="spectrum-comparison">
                         <div class="original-spectrum">
-                            <div class="line" style="left: 50%;"></div>
-                            <p class="spectrum-label">Spektrum Asli</p>
+                            <div class="line"></div>
+                            <p>Spektrum Asli</p>
                         </div>
                         <div class="shifted-spectrum">
-                            <div class="line" style="left: 50%;"></div>
-                            <p class="spectrum-label">Spektrum Bergeser</p>
+                            <div class="line"></div>
+                            <p>Spektrum Bergeser</p>
                         </div>
                     </div>
                     <div class="redshift-info">
-                        <p>Kecepatan: <span id="velocity-value">0 km/s</span></p>
+                        <p>Kecepatan: <span id="velocity-value">0 km/s</span></p>
+                        <p class="hint">(Geser slider untuk melihat efek pergeseran)</p>
+                    </div>
+                </div>
+                
+                <div class="info-box">
+                    <h4>Penjelasan:</h4>
+                    <ul>
+                        <li><strong>Redshift</strong>: Garis spektrum bergeser ke panjang gelombang lebih panjang (merah) menandakan objek menjauh.</li>
+                        <li><strong>Blueshift</strong>: Garis spektrum bergeser ke panjang gelombang lebih pendek (biru) menandakan objek mendekat.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <a href="#bagian4" class="btn">Lanjut ke Bagian 4 <i class="fas fa-arrow-down"></i></a>
+        </div>
+    </section>
+    
+    <!-- Bagian 4: Kehidupan & Kesimpulan -->
+    <section id="bagian4">
+        <div class="section-header">
+            <h2 class="section-title">Bagian 4: Cahaya dalam Kehidupan Sehari-hari &amp; Kesimpulan</h2>
+            <div class="section-subtitle">Penerapan Cahaya dalam Teknologi Modern dan Kesimpulan Utama</div>
+        </div>
+        
+        <div class="content-grid">
+            <div class="content-card">
+                <h3 class="card-title"><i class="fas fa-heartbeat"></i> Kesehatan &amp; Biologi</h3>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Ritme Sirkadian</h4>
+                        <p>Cahaya alami mengatur jam biologis tubuh, mempengaruhi produksi hormon melatonin untuk siklus tidur-bangun yang sehat. Kekurangan cahaya pagi dapat mengganggu ritme sirkadian dan mengakibatkan gangguan tidur.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Produksi Vitamin D</h4>
+                        <p>Sinar UV-B dari matahari membantu kulit mensintesis vitamin D yang penting untuk kepadatan tulang dan fungsi sistem imun. Paparan sinar matahari teratur mencegah kekurangan vitamin D.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Terapi Cahaya</h4>
+                        <p>Digunakan untuk mengatasi gangguan afektif musiman (SAD) dan gangguan mood dengan meniru sinar matahari. Terapi ini membantu menyeimbangkan ritme biologis dan memulihkan mood.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-card">
+                <h3 class="card-title"><i class="fas fa-microchip"></i> Teknologi &amp; Komunikasi</h3>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-broadcast-tower"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>Fiber Optic</h4>
+                        <p>Teknologi transmisi data menggunakan pulsa cahaya melalui serat kaca, memungkinkan kecepatan internet hingga terabit per detik. Sinyal cahaya dioptikkan sehingga transfer data sangat cepat dan minim interferensi.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>LED &amp; OLED</h4>
+                        <p>Teknologi pencahayaan yang hemat energi dengan kualitas warna tinggi, digunakan dalam layar TV, smartphone, dan penerangan rumah. LED lebih tahan lama, sedangkan OLED bisa menampilkan kontras tinggi dan sudut pandang luas.</p>
+                    </div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="feature-content">
+                        <h4>LIDAR</h4>
+                        <p>Teknologi pemetaan 3D menggunakan sinar laser (cahaya) untuk mengukur jarak. Diterapkan dalam mobil otonom untuk mendeteksi rintangan, serta di arkeologi dan topografi untuk pemetaan detail permukaan bumi.</p>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="text-center">
-            <a href="#bagian4" class="btn">Lanjut ke Bagian 4</a>
-        </div>
-    </section>
-    
-    <!-- Bagian 4: Kehidupan & Kesimpulan -->
-    <section id="bagian4">
-        <h2 class="section-title">Bagian 4: Cahaya dalam Kehidupan Sehari-hari &amp; Kesimpulan</h2>
-        
-        <h3 class="subtitle">Cahaya di Sekitar Kita</h3>
-        <p>Cahaya bukan hanya untuk melihat: ia terlibat langsung dalam kesehatan, teknologi, dan kenyamanan kita.</p>
-        
-        <div class="content-grid">
-            <div class="content-card">
-                <h4><i class="fas fa-heartbeat"></i> Kesehatan &amp; Biologi</h4>
-                <ul>
-                    <li><strong>Ritme Sirkadian (Jam Biologis)</strong>: Cahaya Matahari menyinkronkan internal clock tubuh—ketika terkena cahaya di pagi hari, produksi hormon melatonin berkurang, membuat kita merasa waspada. Saat malam tiba dan cahaya berkurang, tubuh memproduksi melatonin yang membantu tidur. Gangguan pada ritme sirkadian dapat menyebabkan insomnia, gangguan mood, dan masalah metabolik.</li>
-                    <li><strong>Produksi Vitamin D</strong>: Sinar UV‑B dari matahari membantu tubuh mengubah kolesterol di kulit menjadi vitamin D. Vitamin ini penting untuk kesehatan tulang, sistem saraf, dan sistem kekebalan tubuh. Puasa terlalu lama tanpa sinar matahari dapat menyebabkan kekurangan vitamin D (rakhitis pada anak, osteoporosis pada dewasa).</li>
-                    <li><strong>Terapi Cahaya</strong>: Cahaya terang (terutama filter biru/putih) digunakan untuk terapi gangguan afektif musiman (SAD) atau gangguan mood di musim dingin. Lampu terapi membantu mengatur suasana hati dan produksi hormon, mengurangi gejala depresi ringan.</li>
-                </ul>
+        <div class="conclusion-section">
+            <h3 class="conclusion-title"><i class="fas fa-graduation-cap"></i> Kesimpulan Utama</h3>
+            
+            <div class="conclusion-grid">
+                <div class="conclusion-card">
+                    <div class="conclusion-icon">
+                        <i class="fas fa-wave-square"></i>
+                    </div>
+                    <h4>Dualitas Gelombang &amp; Partikel</h4>
+                    <p>Cahaya memiliki sifat ganda. Sebagai gelombang, cahaya menjelaskan fenomena warna, difraksi, dan interferensi. Sebagai partikel, cahaya (foton) menjelaskan efek fotolistrik dan dasar teknologi panel surya.</p>
+                </div>
+                
+                <div class="conclusion-card">
+                    <div class="conclusion-icon">
+                        <i class="fas fa-rainbow"></i>
+                    </div>
+                    <h4>Spektrum Elektromagnetik</h4>
+                    <p>Cahaya tampak hanyalah sebagian kecil dari spektrum yang sangat luas. Setiap rentang gelombang memiliki aplikasi khusus, misalnya radio untuk komunikasi, infrared untuk termografi, dan sinar-X untuk radiografi medis.</p>
+                </div>
+                
+                <div class="conclusion-card">
+                    <div class="conclusion-icon">
+                        <i class="fas fa-telescope"></i>
+                    </div>
+                    <h4>Astronomi &amp; Spektroskopi</h4>
+                    <p>Spektroskopi memungkinkan kita mengidentifikasi unsur di atmosfer bintang dan mengukur kecepatan radialnya melalui pergeseran warna. Teleskop berbagai panjang gelombang membuka halaman baru pemahaman alam semesta.</p>
+                </div>
+                
+                <div class="conclusion-card">
+                    <div class="conclusion-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h4>Kehidupan Sehari-hari</h4>
+                    <p>Cahaya mempengaruhi kesehatan lewat ritme sirkadian dan produksi vitamin D. Teknologi cahaya seperti fiber optic, LED, dan LIDAR mengubah cara kita berkomunikasi, bekerja, dan menjelajah bumi serta luar angkasa.</p>
+                </div>
             </div>
             
-            <div class="content-card">
-                <h4><i class="fas fa-microchip"></i> Teknologi &amp; Komunikasi</h4>
-                <ul>
-                    <li><strong>Fiber Optic</strong>: Kabel serat optik menggunakan pulsa cahaya untuk transmisi data. Berkat cahaya, kita mendapatkan internet supercepat (hingga terabit/detik) dan komunikasi jarak jauh tanpa gangguan elektromagnetik. Prinsip kerjanya: cahaya terpantulkan total di dalam serat gelas, sehingga dapat berjalan jauh tanpa kehilangan sinyal.</li>
-                    <li><strong>LED &amp; OLED</strong>: LED (Light Emitting Diode) adalah semiconductor yang memancarkan cahaya saat diberi arus listrik. Hemat energi, tahan lama, dan dapat dibuat dalam berbagai warna. OLED (Organic LED) adalah lapisan bahan organik yang memancarkan cahaya. Digunakan di layar smartphone dan TV. Keunggulannya: layar bisa sangat tipis, kontras tinggi, warna kaya, dan tidak memerlukan lampu latar terpisah.</li>
-                    <li><strong>LIDAR (Light Detection And Ranging)</strong>: Teknologi yang memancarkan pulsa laser (cahaya inframerah) dan mengukur waktu pantulan untuk memetakan jarak dan bentuk objek. Digunakan di mobil otonom untuk mendeteksi rintangan, di pemetaan 3D untuk arkeologi dan survei, serta di topografi.</li>
-                </ul>
+            <div class="quote">
+                <i class="fas fa-quote-left"></i>
+                <blockquote>"Cahaya adalah pena alam semesta. Setiap foton menuliskan kisah kosmik dari inti bintang hingga kehidupan kita sehari-hari."</blockquote>
+                <i class="fas fa-quote-right"></i>
             </div>
         </div>
         
-        <h3 class="subtitle">Kesimpulan</h3>
-        <div class="conclusion-grid">
-            <div class="conclusion-card">
-                <i class="fas fa-wave-square"></i>
-                <h4>Dualitas Gelombang &amp; Partikel</h4>
-                <p>Cahaya bersifat ganda—dapat dijelaskan sebagai gelombang (λ, f, c) dan sebagai partikel (foton).</p>
-            </div>
-            <div class="conclusion-card">
-                <i class="fas fa-rainbow"></i>
-                <h4>Spektrum Elektromagnetik</h4>
-                <p>Rentang panjang gelombang dari radio hingga gamma, tiap bagian punya fungsi spesifik.</p>
-            </div>
-            <div class="conclusion-card">
-                <i class="fas fa-telescope"></i>
-                <h4>Astronomi &amp; Spektroskopi</h4>
-                <p>Teleskop modern menangkap sinyal dari berbagai panjang gelombang untuk mempelajari alam semesta.</p>
-            </div>
-            <div class="conclusion-card">
-                <i class="fas fa-lightbulb"></i>
-                <h4>Kehidupan Sehari-hari</h4>
-                <p>Cahaya mengatur jam biologis, memfasilitasi teknologi komunikasi, dan memberi manfaat kesehatan.</p>
-            </div>
-        </div>
-        
-        <div class="quote">
-            <i class="fas fa-quote-left"></i>
-            <blockquote>Cahaya adalah pena alam semesta: setiap foton menuliskan kisah kosmik—dari inti bintang hingga kehidupan kita sehari-hari.</blockquote>
-            <i class="fas fa-quote-right"></i>
-        </div>
-        
-        <div class="text-center">
-            <a href="#hero" class="btn btn-outline">Kembali ke Atas</a>
+        <div class="navigation">
+            <a href="#hero" class="btn btn-outline"><i class="fas fa-arrow-up"></i> Kembali ke Atas</a>
         </div>
     </section>
     
-    <!-- Referensi & Footer -->
-    <footer id="referensi">
-        <h2 class="section-title">Referensi</h2>
-        
-        <div class="references">
-            <div>
-                <h3>Jurnal &amp; Buku</h3>
-                <ul>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Referensi</h3>
+                <ul class="reference-list">
                     <li>Hecht, E. (2002). <em>Optics</em> (4th ed.). Addison–Wesley.</li>
                     <li>Tipler, P. A., &amp; Mosca, G. (2007). <em>Physics for Scientists and Engineers</em>. W. H. Freeman.</li>
+                    <li>NASA. "Introduction to the Electromagnetic Spectrum"</li>
+                    <li>ESA. "How Hubble Sees in the Dark"</li>
                 </ul>
             </div>
             
-            <div>
-                <h3>Situs &amp; Artikel Online</h3>
-                <ul>
-                    <li>NASA. "Introduction to the Electromagnetic Spectrum"</li>
-                    <li>ESA. "How Hubble Sees in the Dark"</li>
-                    <li>Pexels. "Space Timelapse Video"</li>
-                    <li>Unsplash. "Deep Space Nebula"</li>
-                    <li>Beethoven, L. v. "Moonlight Sonata" (Domain Publik)</li>
-                </ul>
+            <div class="footer-section">
+                <h3>Tentang Kami</h3>
+                <div class="univ-info">
+                    <div class="univ-logo">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div>
+                        <p>Dhafa Rizi &amp; Ikhsan Malik Arasyid</p>
+                        <p>Mahasiswa Geofisika</p>
+                        <p>Universitas Padjadjaran</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Kontak</h3>
+                <div class="social-icons">
+                    <a href="https://linkedin.com/in/dhafarizi" target="_blank" title="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://instagram.com/dhafarizi" target="_blank" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="mailto:dhafa24002@mail.unpad.ac.id" title="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
             </div>
         </div>
         
-        <div class="univ-info">
-            <p>Dhafa Rizi &amp; Ikhsan Malik Arasyid</p>
-            <p>Mahasiswa Geofisika – Universitas Padjadjaran</p>
+        <div class="copyright">
+            <p>© 2025 Dhafa Rizi &amp; Ikhsan Malik Arasyid. All rights reserved.</p>
         </div>
-        
-        <div class="social-icons">
-            <a href="https://linkedin.com/in/dhafarizi" target="_blank" title="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="https://instagram.com/dhafarizi" target="_blank" title="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="mailto:dhafa24002@mail.unpad.ac.id" title="Email">
-                <i class="fas fa-envelope"></i>
-            </a>
-        </div>
-        
-        <p class="copyright">© 2025 Dhafa Rizi &amp; Ikhsan Malik Arasyid. All rights reserved.</p>
     </footer>
     
     <!-- Music Player -->
     <div class="music-player">
-        <button id="musicToggle">
-            <i class="fas fa-volume-up"></i>
+        <button id="musicToggle" title="Play/Pause Musik">
+            <i class="fas fa-volume-mute"></i>
+            <span class="pulse"></span>
         </button>
     </div>
 
