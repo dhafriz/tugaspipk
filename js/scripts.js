@@ -410,44 +410,37 @@ function initSpectroscopyDemo() {
 
 // Smooth scrolling
 function initSmoothScrolling() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+    // Pilih semua link di dalam dokumen yang href-nya dimulai dengan '#'
+    const allAnchorLinks = document.querySelectorAll('a[href^="#"]');
+
+    // Tambahkan event listener untuk setiap link yang ditemukan
+    allAnchorLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            // 1. Mencegah perilaku default (melompat langsung)
             e.preventDefault();
-            
+
+            // 2. Ambil ID tujuan dari atribut href link yang diklik
             const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
             
+            // Jika href hanya "#", jangan lakukan apa-apa
+            if (targetId === '#') {
+                return;
+            }
+
+            // 3. Cari elemen tujuan di dalam dokumen
             const targetElement = document.querySelector(targetId);
+
+            // 4. Jika elemen tujuan ditemukan, lakukan scroll dengan animasi
             if (targetElement) {
                 window.scrollTo({
+                    // Hitung posisi elemen tujuan dan kurangi 60px untuk jarak dari header
                     top: targetElement.offsetTop - 60,
-                    behavior: 'smooth'
+                    behavior: 'smooth' // Ini adalah kunci animasinya
                 });
             }
         });
     });
 }
-
-const startBtn = document.getElementById('startBtn');
-if (startBtn) {
-    startBtn.addEventListener('click', function(e) {
-        // 1. Mencegah link melompat secara langsung
-        e.preventDefault();
-
-        // 2. Mengambil tujuan dari atribut href
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
-
-        // 3. Lakukan scroll dengan animasi halus (smooth)
-        if (targetElement) {
-            window.scrollTo({
-                top: targetElement.offsetTop - 60, // -60 untuk memberi jarak dari header
-                behavior: 'smooth'
-            });
-        }
-    });
-}
-    // ==========================================================
 
 // Inisialisasi semua
 document.addEventListener('DOMContentLoaded', () => {
