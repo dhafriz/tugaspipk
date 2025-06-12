@@ -408,51 +408,6 @@ function initSpectroscopyDemo() {
     });
 }
 
-// Music player functionality (play/mute perbaikan)
-function initMusicPlayer() {
-    const audio = new Audio('assets/audio/audio-moonlight-sonata.mp3');
-    audio.loop = true;
-    const toggleBtn = document.getElementById('musicToggle');
-    let isPlaying = false;
-    
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', () => {
-            if (isPlaying) {
-                audio.pause();
-                toggleBtn.innerHTML = '<i class="fas fa-volume-mute"></i><span class="pulse"></span>';
-                toggleBtn.querySelector('.pulse').style.animationPlayState = 'paused';
-            } else {
-                audio.play().catch(e => console.log("Autoplay prevented: ", e));
-                toggleBtn.innerHTML = '<i class="fas fa-volume-up"></i><span class="pulse"></span>';
-                toggleBtn.querySelector('.pulse').style.animationPlayState = 'running';
-            }
-            isPlaying = !isPlaying;
-        });
-    }
-    
-    // Mulai audio saat klik tombol "Mulai Eksplorasi"
-    const startBtn = document.getElementById('startBtn');
-    if (startBtn) {
-        startBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            audio.play().catch(e => console.log("Autoplay prevented: ", e));
-            isPlaying = true;
-            if (toggleBtn) {
-                toggleBtn.innerHTML = '<i class="fas fa-volume-up"></i><span class="pulse"></span>';
-                toggleBtn.querySelector('.pulse').style.animationPlayState = 'running';
-            }
-            const targetId = startBtn.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 60,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    }
-}
-
 // Smooth scrolling
 function initSmoothScrolling() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
