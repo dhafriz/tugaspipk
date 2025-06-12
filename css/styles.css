@@ -887,7 +887,6 @@ section.active {
 }
 
 .telescope-card:hover {
-    transform: translateY(-10px);
     box-shadow: var(--glow);
     border-color: rgba(85, 196, 193, 0.4);
 }
