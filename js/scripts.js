@@ -1,7 +1,9 @@
+// File: js/scripts.js
+
 // Star background animation
 function createStars() {
     const starsContainer = document.getElementById('stars');
-    const starsCount = 200;
+    const starsCount = 300;
     
     for (let i = 0; i < starsCount; i++) {
         const star = document.createElement('div');
@@ -14,12 +16,12 @@ function createStars() {
         star.style.top = `${y}%`;
         
         // Random size
-        const size = Math.random() * 3;
+        const size = Math.random() * 4;
         star.style.width = `${size}px`;
         star.style.height = `${size}px`;
         
         // Random animation duration
-        const duration = 2 + Math.random() * 8;
+        const duration = 2 + Math.random() * 10;
         star.style.setProperty('--duration', `${duration}s`);
         
         starsContainer.appendChild(star);
@@ -29,7 +31,7 @@ function createStars() {
 // Floating particles
 function createParticles() {
     const particlesContainer = document.getElementById('particles');
-    const particlesCount = 30;
+    const particlesCount = 50;
     
     for (let i = 0; i < particlesCount; i++) {
         const particle = document.createElement('div');
@@ -42,15 +44,36 @@ function createParticles() {
         particle.style.top = `${y}%`;
         
         // Random size
-        const size = 1 + Math.random() * 3;
+        const size = 1 + Math.random() * 4;
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
         
         // Random animation duration
-        const duration = 10 + Math.random() * 20;
+        const duration = 10 + Math.random() * 30;
         particle.style.animationDuration = `${duration}s`;
         
         particlesContainer.appendChild(particle);
+    }
+}
+
+// Hamburger menu functionality
+function initHamburgerMenu() {
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+    
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
     }
 }
 
@@ -64,6 +87,8 @@ function initScrollSpy() {
         
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            
             if (pageYOffset >= sectionTop - 200) {
                 current = section.getAttribute('id');
             }
@@ -86,12 +111,23 @@ function initScrollSpy() {
     });
 }
 
-// Section animation on scroll
+// Section animation on scroll (termasuk timeline staggered)
 function initScrollAnimations() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
+                
+                // Jika ada timeline di dalam section, animasi staggered tiap item
+                if (entry.target.querySelector('.timeline')) {
+                    const timeline = entry.target.querySelector('.timeline');
+                    const items = timeline.querySelectorAll('.timeline-item');
+                    items.forEach((item, idx) => {
+                        setTimeout(() => {
+                            item.classList.add('visible');
+                        }, idx * 200);
+                    });
+                }
             }
         });
     }, { threshold: 0.1 });
@@ -103,39 +139,77 @@ function initScrollAnimations() {
     });
 }
 
-// Wave animation (Bagian 1)
+// Wave animation (otomatis berjalan, λ dan f bisa disesuaikan)
 function initWaveAnimation() {
     const canvas = document.getElementById('waveCanvas');
+    if (!canvas) return;
+    
     const ctx = canvas.getContext('2d');
     const wavelengthInput = document.getElementById('wavelength');
     const frequencyInput = document.getElementById('frequency');
+    const waveSpeedInput = document.getElementById('waveSpeed');
     const wavelengthValue = document.getElementById('wavelength-value');
     const frequencyValue = document.getElementById('frequency-value');
+    const waveSpeedValue = document.getElementById('waveSpeed-value');
+    const playWaveBtn = document.getElementById('playWaveBtn');
+    const pauseWaveBtn = document.getElementById('pauseWaveBtn');
     
-    // Set canvas size
     function resizeCanvas() {
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
     }
     
+    // Inisialisasi resize dan update otomatis
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
     
-    // Draw wave function
-    function drawWave(wavelength, frequency) {
+    let currentWavelength = parseInt(wavelengthInput.value);
+    let currentFrequency = parseInt(frequencyInput.value);
+    let waveSpeed = parseInt(waveSpeedInput.value);
+    let isPlaying = true;
+    let animationFrameId;
+    let timeOffset = 0;
+    
+    // Speed labels
+    const speedLabels = ['Sangat Lambat', 'Lambat', 'Normal', 'Cepat', 'Sangat Cepat'];
+    
+    function drawWave() {
+        if (!canvas) return;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
         const amplitude = canvas.height / 4;
         const centerY = canvas.height / 2;
-        const speed = 0.02;
-        const time = Date.now() * speed;
+        const time = Date.now() * 0.001 * waveSpeed;
         
+        // Draw grid
+        ctx.strokeStyle = 'rgba(143, 143, 220, 0.2)';
+        ctx.lineWidth = 1;
+        
+        // Horizontal lines
+        for (let i = 0; i < canvas.height; i += 20) {
+            ctx.beginPath();
+            ctx.moveTo(0, i);
+            ctx.lineTo(canvas.width, i);
+            ctx.stroke();
+        }
+        
+        // Vertical lines
+        for (let i = 0; i < canvas.width; i += 20) {
+            ctx.beginPath();
+            ctx.moveTo(i, 0);
+            ctx.lineTo(i, canvas.height);
+            ctx.stroke();
+        }
+        
+        // Draw wave
         ctx.beginPath();
         ctx.strokeStyle = '#55c4c1';
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 4;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#55c4c1';
         
         for (let x = 0; x < canvas.width; x++) {
-            const y = centerY + amplitude * Math.sin((x / wavelength) * 10 + time);
+            const y = centerY + amplitude * Math.sin((x / currentWavelength) * 10 + time + timeOffset);
             
             if (x === 0) {
                 ctx.moveTo(x, y);
@@ -143,99 +217,126 @@ function initWaveAnimation() {
                 ctx.lineTo(x, y);
             }
         }
-        
         ctx.stroke();
         
-        // Draw wavelength indicator
+        // Wavelength indicator
         const indicatorX = canvas.width / 2;
-        const startY = centerY + amplitude * Math.sin((indicatorX / wavelength) * 10 + time);
-        const endY = centerY + amplitude * Math.sin(((indicatorX + wavelength) / wavelength) * 10 + time);
+        const startY = centerY + amplitude * Math.sin((indicatorX / currentWavelength) * 10 + time + timeOffset);
+        const endY = centerY + amplitude * Math.sin(((indicatorX + currentWavelength) / currentWavelength) * 10 + time + timeOffset);
         
         ctx.beginPath();
         ctx.strokeStyle = '#8f8fdc';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 3;
         ctx.setLineDash([5, 3]);
         ctx.moveTo(indicatorX, startY);
-        ctx.lineTo(indicatorX + wavelength, startY);
+        ctx.lineTo(indicatorX + currentWavelength, startY);
         ctx.stroke();
         
-        // Draw lambda symbol
-        ctx.font = '20px Arial';
+        ctx.font = 'bold 24px Arial';
         ctx.fillStyle = '#f0f0f0';
-        ctx.fillText('λ', indicatorX + wavelength / 2 - 5, startY - 10);
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#000';
+        ctx.fillText('λ', indicatorX + currentWavelength / 2 - 8, startY - 15);
         
         ctx.setLineDash([]);
+        ctx.shadowBlur = 0;
+        
+        if (isPlaying) {
+            animationFrameId = requestAnimationFrame(drawWave);
+        }
     }
     
-    // Update inputs
+    // Event listener slider
     wavelengthInput.addEventListener('input', function() {
-        const wavelength = parseInt(this.value);
-        const frequency = 3e8 / (wavelength * 1e-9) / 1e12; // c = λf -> f = c/λ
-        frequencyInput.value = Math.round(frequency);
+        currentWavelength = parseInt(this.value);
+        const freq = 3e8 / (currentWavelength * 1e-9) / 1e12;  // c = λf ⇒ f = c/λ
+        currentFrequency = Math.round(freq);
+        frequencyInput.value = currentFrequency;
         
-        wavelengthValue.textContent = `${wavelength} nm`;
-        frequencyValue.textContent = `${Math.round(frequency)} THz`;
-        
-        drawWave(wavelength, frequency);
+        wavelengthValue.textContent = `${currentWavelength} nm`;
+        frequencyValue.textContent = `${currentFrequency} THz`;
     });
     
     frequencyInput.addEventListener('input', function() {
-        const frequency = parseInt(this.value);
-        const wavelength = 3e8 / (frequency * 1e12) * 1e9; // λ = c/f
+        currentFrequency = parseInt(this.value);
+        const waveLen = 3e8 / (currentFrequency * 1e12) * 1e9;   // λ = c/f
+        currentWavelength = Math.round(waveLen);
+        wavelengthInput.value = currentWavelength;
         
-        wavelengthInput.value = Math.round(wavelength);
-        
-        wavelengthValue.textContent = `${Math.round(wavelength)} nm`;
-        frequencyValue.textContent = `${frequency} THz`;
-        
-        drawWave(wavelength, frequency);
+        wavelengthValue.textContent = `${currentWavelength} nm`;
+        frequencyValue.textContent = `${currentFrequency} THz`;
     });
     
-    // Initial draw
-    drawWave(550, 545);
+    waveSpeedInput.addEventListener('input', function() {
+        waveSpeed = parseInt(this.value);
+        waveSpeedValue.textContent = speedLabels[waveSpeed - 1];
+    });
+    
+    // Wave control buttons
+    playWaveBtn.addEventListener('click', function() {
+        isPlaying = true;
+        playWaveBtn.classList.add('active');
+        pauseWaveBtn.classList.remove('active');
+        timeOffset = Date.now() * 0.001 * waveSpeed;
+        drawWave();
+    });
+    
+    pauseWaveBtn.addEventListener('click', function() {
+        isPlaying = false;
+        playWaveBtn.classList.remove('active');
+        pauseWaveBtn.classList.add('active');
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+        }
+    });
+    
+    // Mulai animasi
+    drawWave();
 }
 
-// Spectrum slider functionality (Bagian 2)
+// Spectrum slider functionality
 function initSpectrumSlider() {
     const slider = document.getElementById('spectrumSlider');
     const spectrumName = document.getElementById('spectrum-name');
     const spectrumRange = document.getElementById('spectrum-range');
     const spectrumDesc = document.getElementById('spectrum-desc');
     
+    if (!slider || !spectrumName || !spectrumRange || !spectrumDesc) return;
+    
     const spectrumData = [
         { 
             name: "Radio", 
-            range: "≥ 1 m", 
+            range: "≥1 m", 
             desc: "Digunakan untuk siaran radio, komunikasi satelit, dan radio astronomi. Teleskop radio seperti VLA (Very Large Array) memetakan galaksi jauh." 
         },
         { 
             name: "Microwave", 
-            range: "1 mm – 1 m", 
+            range: "1 mm – 1 m", 
             desc: "Digunakan di oven microwave, radar, dan komunikasi nirkabel. Astronomi microwave membantu mempelajari latar kosmik gelombang mikro (CMB)." 
         },
         { 
             name: "Infrared", 
-            range: "700 nm – 1 mm", 
+            range: "700 nm – 1 mm", 
             desc: "Digunakan di termografi, remote kontrol, kamera thermal, dan teleskop inframerah. Teleskop IR seperti Spitzer melihat debu kosmik dan wilayah pembentukan bintang." 
         },
         { 
             name: "Visible", 
-            range: "380 – 750 nm", 
+            range: "380 – 750 nm", 
             desc: "Panjang gelombang yang dapat dilihat mata manusia sebagai warna. Digunakan pada kamera optik, mikroskop, dan teleskop optik seperti Hubble." 
         },
         { 
             name: "Ultraviolet", 
-            range: "10 – 380 nm", 
-            desc: "Digunakan untuk sterilisasi, produksi vitamin D, dan pengamatan meteorosfer. Astronomi UV mempelajari atmosfer bintang dan bintang muda." 
+            range: "10 – 380 nm", 
+            desc: "Digunakan untuk sterilisasi, produksi vitamin D, dan pengamatan meteorosfer. Astronomi UV mempelajari atmosfer bintang dan bintang muda." 
         },
         { 
             name: "X-Ray", 
-            range: "0.01 – 10 nm", 
-            desc: "Digunakan untuk radiografi medis (CT scan) dan pengamatan sinar X astronomi. Teleskop sinar X seperti Chandra memetakan lubang hitam." 
+            range: "0.01 – 10 nm", 
+            desc: "Digunakan untuk radiografi medis (CT scan) dan pengamatan sinar X astronomi. Teleskop sinar X seperti Chandra memetakan lubang hitam." 
         },
         { 
             name: "Gamma", 
-            range: "< 0.01 nm", 
+            range: "<0.01 nm", 
             desc: "Sinar gamma sangat berenergi, muncul dari fenomena ekstrem seperti ledakan supernova dan inti galaksi aktif. Observatorium gamma seperti Fermi mempelajari mekanisme ini." 
         }
     ];
@@ -248,20 +349,48 @@ function initSpectrumSlider() {
         spectrumDesc.textContent = data.desc;
     });
     
-    // Initialize
     slider.dispatchEvent(new Event('input'));
 }
 
-// Spectroscopy demo (Bagian 3)
+// Redshift demo
+function initRedshiftDemo() {
+    const slider = document.getElementById('redshiftSlider');
+    const redshiftValue = document.getElementById('redshift-value');
+    const velocityValue = document.getElementById('velocity-value');
+    const shiftedLine = document.querySelector('.shifted-spectrum .line');
+    
+    if (!slider || !redshiftValue || !velocityValue || !shiftedLine) return;
+    
+    slider.addEventListener('input', function() {
+        const z = parseFloat(this.value);
+        redshiftValue.textContent = z.toFixed(2);
+        
+        const c = 3e5; // km/s
+        const v = z * c;
+        velocityValue.textContent = `${Math.round(v).toLocaleString()} km/s`;
+        
+        let shiftPercentage = z * 100;
+        // Batasi pergeseran agar tidak keluar kotak
+        if (shiftPercentage > 50) shiftPercentage = 50;
+        if (shiftPercentage < -50) shiftPercentage = -50;
+        shiftedLine.style.left = `${50 + shiftPercentage}%`;
+    });
+    
+    slider.dispatchEvent(new Event('input'));
+}
+
+// Spectroscopy demo
 function initSpectroscopyDemo() {
     const lines = document.querySelectorAll('.spectroscopy-demo .line');
-    const elementInfo = document.querySelector('.element-info');
+    const elementInfo = document.getElementById('elementInfo');
+    
+    if (!lines.length || !elementInfo) return;
     
     const elements = {
-        "H": { name: "Hidrogen", wavelength: "656 nm", desc: "Garis H-alpha, indikator hidrogen di bintang" },
-        "He":{ name: "Helium",   wavelength: "587 nm", desc: "Garis helium, terlihat di bintang panas" },
-        "O": { name: "Oksigen",  wavelength: "500 nm", desc: "Garis O-III, terlihat di nebula" },
-        "Fe":{ name: "Besi",     wavelength: "430 nm", desc: "Garis besi, indikator logam di atmosfer bintang" }
+        "H": { name: "Hidrogen", wavelength: "656 nm", desc: "Garis H-alpha, indikator hidrogen di bintang" },
+        "He": { name: "Helium", wavelength: "587 nm", desc: "Garis helium, terlihat di bintang panas" },
+        "O": { name: "Oksigen", wavelength: "500 nm", desc: "Garis O-III, terlihat di nebula" },
+        "Fe": { name: "Besi", wavelength: "430 nm", desc: "Garis besi, indikator logam di atmosfer bintang" }
     };
     
     lines.forEach(line => {
@@ -269,6 +398,7 @@ function initSpectroscopyDemo() {
             const element = this.dataset.element;
             const info = elements[element];
             
+            // Langsung tampilkan tanpa animasi
             elementInfo.innerHTML = `
                 <h4>${info.name} (${element})</h4>
                 <p><strong>Panjang Gelombang:</strong> ${info.wavelength}</p>
@@ -278,57 +408,39 @@ function initSpectroscopyDemo() {
     });
 }
 
-// Redshift demo (Bagian 3)
-function initRedshiftDemo() {
-    const slider = document.getElementById('redshiftSlider');
-    const redshiftValue = document.getElementById('redshift-value');
-    const velocityValue = document.getElementById('velocity-value');
-    const shiftedLine = document.querySelector('.shifted-spectrum .line');
-    
-    slider.addEventListener('input', function() {
-        const z = parseFloat(this.value);
-        redshiftValue.textContent = z.toFixed(2);
-        
-        // Calculate velocity (v = z * c for small z)
-        const c = 3e5; // km/s
-        const v = z * c;
-        velocityValue.textContent = `${Math.round(v).toLocaleString()} km/s`;
-        
-        // Move the line based on redshift
-        const shiftPercentage = z * 100;
-        shiftedLine.style.left = `${50 + shiftPercentage}%`;
-    });
-}
-
-// Music player functionality
+// Music player functionality (play/mute perbaikan)
 function initMusicPlayer() {
-    // Pastikan path benar dan dijalankan di server lokal (http/https)
     const audio = new Audio('assets/audio/audio-moonlight-sonata.mp3');
+    audio.loop = true;
     const toggleBtn = document.getElementById('musicToggle');
-    const startBtn = document.getElementById('startBtn');
     let isPlaying = false;
     
-    // Ketika tombol speaker diklik—toggle mute/unmute
-    toggleBtn.addEventListener('click', () => {
-        if (isPlaying) {
-            audio.pause();
-            toggleBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-        } else {
-            audio.play().catch(e => console.log("Autoplay prevented:", e));
-            toggleBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-        }
-        isPlaying = !isPlaying;
-    });
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                toggleBtn.innerHTML = '<i class="fas fa-volume-mute"></i><span class="pulse"></span>';
+                toggleBtn.querySelector('.pulse').style.animationPlayState = 'paused';
+            } else {
+                audio.play().catch(e => console.log("Autoplay prevented: ", e));
+                toggleBtn.innerHTML = '<i class="fas fa-volume-up"></i><span class="pulse"></span>';
+                toggleBtn.querySelector('.pulse').style.animationPlayState = 'running';
+            }
+            isPlaying = !isPlaying;
+        });
+    }
     
-    // Tombol "Mulai Eksplorasi" juga memicu putar musik dan scroll
+    // Mulai audio saat klik tombol "Mulai Eksplorasi"
+    const startBtn = document.getElementById('startBtn');
     if (startBtn) {
         startBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            // Putar musik
-            audio.play().catch(e => console.log("Autoplay prevented:", e));
+            audio.play().catch(e => console.log("Autoplay prevented: ", e));
             isPlaying = true;
-            toggleBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
-            // Scroll ke elemen berikutnya
+            if (toggleBtn) {
+                toggleBtn.innerHTML = '<i class="fas fa-volume-up"></i><span class="pulse"></span>';
+                toggleBtn.querySelector('.pulse').style.animationPlayState = 'running';
+            }
             const targetId = startBtn.getAttribute('href');
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
@@ -341,13 +453,15 @@ function initMusicPlayer() {
     }
 }
 
-// Smooth scrolling (link internal)
+// Smooth scrolling
 function initSmoothScrolling() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
+            
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
+            
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
                 window.scrollTo({
@@ -363,12 +477,13 @@ function initSmoothScrolling() {
 document.addEventListener('DOMContentLoaded', () => {
     createStars();
     createParticles();
+    initHamburgerMenu();
     initScrollSpy();
     initScrollAnimations();
     initWaveAnimation();
     initSpectrumSlider();
-    initSpectroscopyDemo();
     initRedshiftDemo();
+    initSpectroscopyDemo();
     initMusicPlayer();
     initSmoothScrolling();
 });
