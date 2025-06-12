@@ -439,6 +439,25 @@ document.addEventListener('DOMContentLoaded', () => {
     initSpectrumSlider();
     initRedshiftDemo();
     initSpectroscopyDemo();
-    initMusicPlayer();
     initSmoothScrolling();
+    const startBtn = document.getElementById('startBtn');
+    if (startBtn) {
+        startBtn.addEventListener('click', function(e) {
+            // 1. Mencegah link melompat secara langsung
+            e.preventDefault();
+
+            // 2. Mengambil tujuan dari atribut href
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+
+            // 3. Lakukan scroll dengan animasi halus (smooth)
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 60, // -60 untuk memberi jarak dari header
+                    behavior: 'smooth'
+                });
+            }
+        });
+    }
+    // ==========================================================
 });
