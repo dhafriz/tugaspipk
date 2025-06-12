@@ -882,15 +882,13 @@ section.active {
     position: relative;
     transition: var(--transition);
     border: 1px solid rgba(85, 196, 193, 0.2);
-    transform: perspective(1000px) rotateY(0deg);
-    transform-style: preserve-3d;
     box-shadow: var(--shadow);
-    height: 450px; /* Tinggi ditambah agar cukup untuk teks */
+    height: 450px;
 }
 
 .telescope-card:hover {
-    transform: perspective(1000px) rotateY(10deg);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    transform: translateY(-10px);
+    box-shadow: var(--glow);
     border-color: rgba(85, 196, 193, 0.4);
 }
 
@@ -900,10 +898,6 @@ section.active {
     background-size: cover;
     background-position: center;
     transition: transform 0.5s;
-}
-
-.telescope-card:hover .telescope-image {
-    transform: scale(1.05);
 }
 
 .telescope-info {
